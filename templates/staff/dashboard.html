@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>My Dashboard</h1>
+    <p class="text-muted">Assigned treks and participant counts.</p>
+  </div>
+</div>
+
+<div class="stats-grid three">
+  <div class="stat-card">
+    <span>Assigned Treks</span>
+    <strong>{{ stats.assigned }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Total Participants</span>
+    <strong>{{ stats.participants }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Open Treks</span>
+    <strong>{{ stats.open }}</strong>
+  </div>
+</div>
+
+<section class="table-section">
+  <div class="section-title"><h2>My Assigned Treks</h2></div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Trek Name</th>
+          <th>Location</th>
+          <th>Participants</th>
+          <th>Slots</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trek in treks %}
+          <tr>
+            <td>{{ trek.name }}</td>
+            <td>{{ trek.location }}</td>
+            <td>{{ trek.booked_count }}</td>
+            <td>{{ trek.remaining_slots }} / {{ trek.total_slots }}</td>
+            <td><span class="badge text-bg-light border">{{ trek.status }}</span></td>
+            <td><a class="btn btn-sm btn-outline-primary" href="{{ url_for('staff_trek_detail', trek_id=trek.id) }}">Manage</a></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-muted">No treks are assigned to you yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

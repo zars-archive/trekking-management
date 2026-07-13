@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Manage {{ trek.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ trek.name }}</h1>
+    <p class="text-muted">{{ trek.location }} - {{ trek.difficulty }} - {{ trek.duration_days }} days</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('staff_dashboard') }}">Back</a>
+</div>
+
+<section class="form-panel mb-4">
+  <form method="post" class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label">Total Slots</label>
+      <input class="form-control" type="number" min="{{ trek.booked_count }}" name="total_slots" value="{{ trek.total_slots }}" required>
+      <div class="form-text">{{ trek.booked_count }} active bookings</div>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Status</label>
+      <select class="form-select" name="status">
+        {% for item in ["Open", "Closed", "Started", "Completed"] %}
+          <option value="{{ item }}" {% if trek.status == item %}selected{% endif %}>{{ item }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-6 text-md-end">
+      <button class="btn btn-primary" type="submit">Save Changes</button>
+    </div>
+  </form>
+</section>
+
+<section class="table-section">
+  <div class="section-title"><h2>Participants</h2></div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Booking Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for person in participants %}
+          <tr>
+            <td>{{ person.user_name }}</td>
+            <td>{{ person.email }}</td>
+            <td>{{ person.phone or "-" }}</td>
+            <td>{{ person.booking_date }}</td>
+            <td><span class="badge text-bg-light border">{{ person.status }}</span></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="text-muted">No participants registered yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
