@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ "Trekking History" if history else "My Bookings" }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ "Trekking History" if history else "My Bookings" }}</h1>
+    <p class="text-muted">
+      {{ "Completed and cancelled treks." if history else "All bookings made from your account." }}
+    </p>
+  </div>
+</div>
+
+<section class="table-section">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Trek Name</th>
+          <th>Location</th>
+          <th>Booking Date</th>
+          <th>Trek Dates</th>
+          <th>Status</th>
+          {% if not history %}<th>Action</th>{% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.trek_name }}</td>
+            <td>{{ booking.location }}</td>
+            <td>{{ booking.booking_date }}</td>
+            <td>{{ booking.start_date }} to {{ booking.end_date }}</td>
+            <td><span class="badge text-bg-light border">{{ booking.status }}</span></td>
+            {% if not history %}
+              <td>
+                {% if booking.status == "Booked" %}
+                  <form method="post" action="{{ url_for('user_cancel_booking', booking_id=booking.id) }}">
+                    <button class="btn btn-sm btn-outline-danger">Cancel</button>
+                  </form>
+                {% else %}
+                  <span class="text-muted">-</span>
+                {% endif %}
+              </td>
+            {% endif %}
+          </tr>
+        {% else %}
+          <tr><td colspan="{{ 6 if not history else 5 }}" class="text-muted">No records found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
