@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Profile</h1>
+    <p class="text-muted">Update your basic contact details.</p>
+  </div>
+</div>
+
+<section class="form-panel small-panel">
+  <form method="post" class="vstack gap-3">
+    <div>
+      <label class="form-label">Full Name</label>
+      <input class="form-control" name="name" value="{{ user.name }}" required>
+    </div>
+    <div>
+      <label class="form-label">Email</label>
+      <input class="form-control" value="{{ user.email }}" disabled>
+    </div>
+    <div>
+      <label class="form-label">Contact Number</label>
+      <input class="form-control" name="phone" value="{{ user.phone or '' }}">
+    </div>
+    <button class="btn btn-primary" type="submit">Save Profile</button>
+  </form>
+</section>
+{% endblock %}

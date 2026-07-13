@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ trek.name }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ trek.name }}</h1>
+    <p class="text-muted">{{ trek.location }} - {{ trek.difficulty }} - {{ trek.duration_days }} days</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="{{ url_for('user_dashboard') }}">Back to Treks</a>
+</div>
+
+<section class="trek-detail">
+  <img class="trek-image" src="{{ url_for('static', filename='images/trailmark-mountains.webp') }}" alt="Mountain trail in the Himalayas">
+  <div>
+    <dl class="row mb-0">
+      <dt class="col-sm-4">Location</dt>
+      <dd class="col-sm-8">{{ trek.location }}</dd>
+      <dt class="col-sm-4">Difficulty</dt>
+      <dd class="col-sm-8">{{ trek.difficulty }}</dd>
+      <dt class="col-sm-4">Start Date</dt>
+      <dd class="col-sm-8">{{ trek.start_date }}</dd>
+      <dt class="col-sm-4">End Date</dt>
+      <dd class="col-sm-8">{{ trek.end_date }}</dd>
+      <dt class="col-sm-4">Assigned Staff</dt>
+      <dd class="col-sm-8">{{ trek.staff_name or "Not assigned" }}</dd>
+      <dt class="col-sm-4">Available Slots</dt>
+      <dd class="col-sm-8">{{ trek.remaining_slots }}</dd>
+      <dt class="col-sm-4">Status</dt>
+      <dd class="col-sm-8">{{ trek.status }}</dd>
+    </dl>
+    <p class="mt-3">{{ trek.description }}</p>
+    <form method="post">
+      <button class="btn btn-primary" type="submit" {% if trek.status != "Open" or existing or trek.remaining_slots <= 0 %}disabled{% endif %}>
+        {% if existing %}Already Booked{% else %}Book Now{% endif %}
+      </button>
+    </form>
+  </div>
+</section>
+{% endblock %}

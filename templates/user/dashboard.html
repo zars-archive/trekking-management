@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}User Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Welcome, {{ current_user.name }}!</h1>
+    <p class="text-muted">Browse open treks and manage your bookings.</p>
+  </div>
+</div>
+
+<form class="filter-bar mb-4">
+  <input class="form-control" name="q" value="{{ q }}" placeholder="Search by trek or location">
+  <select class="form-select" name="difficulty">
+    <option value="">All difficulties</option>
+    {% for item in ["Easy", "Moderate", "Hard"] %}
+      <option value="{{ item }}" {% if difficulty == item %}selected{% endif %}>{{ item }}</option>
+    {% endfor %}
+  </select>
+  <select class="form-select" name="location">
+    <option value="">All locations</option>
+    {% for item in locations %}
+      <option value="{{ item.location }}" {% if location == item.location %}selected{% endif %}>{{ item.location }}</option>
+    {% endfor %}
+  </select>
+  <button class="btn btn-primary">Filter</button>
+</form>
+
+<section class="table-section mb-4">
+  <div class="section-title"><h2>Available Treks</h2></div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Trek Name</th>
+          <th>Location</th>
+          <th>Difficulty</th>
+          <th>Duration</th>
+          <th>Available Slots</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trek in treks %}
+          <tr>
+            <td>{{ trek.name }}</td>
+            <td>{{ trek.location }}</td>
+            <td>{{ trek.difficulty }}</td>
+            <td>{{ trek.duration_days }} days</td>
+            <td>{{ trek.remaining_slots }}</td>
+            <td><a class="btn btn-sm btn-primary" href="{{ url_for('user_trek_detail', trek_id=trek.id) }}">View</a></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-muted">No open treks match your filters.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="table-section">
+  <div class="section-title">
+    <h2>My Recent Bookings</h2>
+    <a href="{{ url_for('user_bookings') }}">View all</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Trek Name</th>
+          <th>Booking Date</th>
+          <th>Trek Dates</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>{{ booking.trek_name }}</td>
+            <td>{{ booking.booking_date }}</td>
+            <td>{{ booking.start_date }} to {{ booking.end_date }}</td>
+            <td><span class="badge text-bg-light border">{{ booking.status }}</span></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4" class="text-muted">No bookings yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
