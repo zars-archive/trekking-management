@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Manage {{ person_type|capitalize }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ "Staff Requests" if person_type == "staff" else "Users" }}</h1>
+    <p class="text-muted">Approve, activate, or blacklist accounts when needed.</p>
+  </div>
+</div>
+
+<form class="search-row mb-3">
+  <input class="form-control" name="q" value="{{ q }}" placeholder="Search by name, email, or ID">
+  <button class="btn btn-outline-primary">Search</button>
+</form>
+
+<section class="table-section">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for person in people %}
+          <tr>
+            <td>{{ person.id }}</td>
+            <td>{{ person.name }}</td>
+            <td>{{ person.email }}</td>
+            <td>{{ person.phone or "-" }}</td>
+            <td><span class="badge text-bg-light border">{{ person.status }}</span></td>
+            <td>
+              <div class="d-flex flex-wrap gap-2">
+                {% if person_type == "staff" and person.status == "pending" %}
+                  <form method="post" action="{{ url_for('admin_user_status', user_id=person.id) }}">
+                    <input type="hidden" name="action" value="approve">
+                    <button class="btn btn-sm btn-success">Approve</button>
+                  </form>
+                {% endif %}
+                {% if person.status == "blacklisted" %}
+                  <form method="post" action="{{ url_for('admin_user_status', user_id=person.id) }}">
+                    <input type="hidden" name="action" value="activate">
+                    <button class="btn btn-sm btn-outline-primary">Activate</button>
+                  </form>
+                {% else %}
+                  <form method="post" action="{{ url_for('admin_user_status', user_id=person.id) }}">
+                    <input type="hidden" name="action" value="blacklist">
+                    <button class="btn btn-sm btn-outline-danger">Blacklist</button>
+                  </form>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="text-muted">No accounts found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

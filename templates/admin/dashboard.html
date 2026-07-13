@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Dashboard</h1>
+    <p class="text-muted">System overview and recent trekking activity.</p>
+  </div>
+  <form class="d-flex gap-2" action="{{ url_for('admin_search') }}">
+    <input class="form-control" name="q" placeholder="Search by name or ID">
+    <button class="btn btn-primary">Search</button>
+  </form>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <span>Total Treks</span>
+    <strong>{{ counts.treks }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Total Users</span>
+    <strong>{{ counts.users }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Total Staff</span>
+    <strong>{{ counts.staff }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Total Bookings</span>
+    <strong>{{ counts.bookings }}</strong>
+  </div>
+</div>
+
+<section class="table-section">
+  <div class="section-title">
+    <h2>Recent Bookings</h2>
+    <a href="{{ url_for('admin_bookings') }}">View all</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Trek</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in recent_bookings %}
+          <tr>
+            <td>B{{ "%03d"|format(booking.id) }}</td>
+            <td>{{ booking.user_name }}</td>
+            <td>{{ booking.trek_name }}</td>
+            <td>{{ booking.booking_date }}</td>
+            <td><span class="badge text-bg-light border">{{ booking.status }}</span></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="text-muted">No bookings yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

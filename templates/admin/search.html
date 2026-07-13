@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Search{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Search</h1>
+    <p class="text-muted">Find treks, staff, or users by name, email, location, or ID.</p>
+  </div>
+</div>
+
+<form class="search-row mb-4">
+  <input class="form-control" name="q" value="{{ q }}" placeholder="Search by name or ID">
+  <button class="btn btn-primary">Search</button>
+</form>
+
+{% if q %}
+  <section class="table-section mb-4">
+    <div class="section-title"><h2>Treks</h2></div>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>ID</th><th>Name</th><th>Location</th><th>Staff</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for trek in treks %}
+            <tr>
+              <td>{{ trek.id }}</td>
+              <td>{{ trek.name }}</td>
+              <td>{{ trek.location }}</td>
+              <td>{{ trek.staff_name or "Unassigned" }}</td>
+              <td>{{ trek.status }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="5" class="text-muted">No treks matched.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="table-section mb-4">
+    <div class="section-title"><h2>Staff</h2></div>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for person in staff %}
+            <tr>
+              <td>{{ person.id }}</td>
+              <td>{{ person.name }}</td>
+              <td>{{ person.email }}</td>
+              <td>{{ person.status }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="text-muted">No staff matched.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="table-section">
+    <div class="section-title"><h2>Users</h2></div>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for person in users %}
+            <tr>
+              <td>{{ person.id }}</td>
+              <td>{{ person.name }}</td>
+              <td>{{ person.email }}</td>
+              <td>{{ person.status }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="4" class="text-muted">No users matched.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% else %}
+  <p class="text-muted">Enter a search term to begin.</p>
+{% endif %}
+{% endblock %}

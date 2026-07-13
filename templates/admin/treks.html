@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Manage Treks{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Treks</h1>
+    <p class="text-muted">Create routes, assign staff, and update trek status.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('admin_trek_new') }}">Add New Trek</a>
+</div>
+
+<form class="search-row mb-3">
+  <input class="form-control" name="q" value="{{ q }}" placeholder="Search treks by name, location, difficulty, or ID">
+  <button class="btn btn-outline-primary">Search</button>
+</form>
+
+<section class="table-section">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Trek Name</th>
+          <th>Location</th>
+          <th>Difficulty</th>
+          <th>Slots</th>
+          <th>Staff</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trek in treks %}
+          <tr>
+            <td>{{ trek.id }}</td>
+            <td>{{ trek.name }}</td>
+            <td>{{ trek.location }}</td>
+            <td>{{ trek.difficulty }}</td>
+            <td>{{ trek.remaining_slots }} / {{ trek.total_slots }}</td>
+            <td>{{ trek.staff_name or "Unassigned" }}</td>
+            <td><span class="badge text-bg-light border">{{ trek.status }}</span></td>
+            <td>
+              <div class="d-flex gap-2">
+                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('admin_trek_edit', trek_id=trek.id) }}">Edit</a>
+                <form method="post" action="{{ url_for('admin_trek_delete', trek_id=trek.id) }}">
+                  <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="8" class="text-muted">No treks found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}All Bookings{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Bookings</h1>
+    <p class="text-muted">Complete booking history across every trek.</p>
+  </div>
+</div>
+
+<section class="table-section">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Booking ID</th>
+          <th>User</th>
+          <th>Trek</th>
+          <th>Booking Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking in bookings %}
+          <tr>
+            <td>B{{ "%03d"|format(booking.id) }}</td>
+            <td>{{ booking.user_name }}</td>
+            <td>{{ booking.trek_name }}</td>
+            <td>{{ booking.booking_date }}</td>
+            <td><span class="badge text-bg-light border">{{ booking.status }}</span></td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5" class="text-muted">No bookings yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
