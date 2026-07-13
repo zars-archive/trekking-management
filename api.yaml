@@ -1,0 +1,42 @@
+openapi: 3.0.0
+info:
+  title: Trekking Management API
+  version: "1.0"
+paths:
+  /api/treks:
+    get:
+      summary: List all treks with staff and slot counts
+      responses:
+        "200":
+          description: Trek list returned successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    location:
+                      type: string
+                    difficulty:
+                      type: string
+                    duration_days:
+                      type: integer
+                    total_slots:
+                      type: integer
+                    remaining_slots:
+                      type: integer
+                    booked_count:
+                      type: integer
+                    status:
+                      type: string
+                    start_date:
+                      type: string
+                    end_date:
+                      type: string
+                    staff_name:
+                      type: string
