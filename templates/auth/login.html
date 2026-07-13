@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Login - Trailmark{% endblock %}
+{% block content %}
+<section class="auth-panel">
+  <h1 class="h3 mb-1">Login</h1>
+  <p class="text-muted mb-4">Use your Admin, Staff, or Trekker account.</p>
+  <form method="post" class="vstack gap-3">
+    <div>
+      <label class="form-label">Email</label>
+      <input class="form-control" type="email" name="email" required autofocus>
+    </div>
+    <div>
+      <label class="form-label">Password</label>
+      <input class="form-control" type="password" name="password" required>
+    </div>
+    <button class="btn btn-primary w-100" type="submit">Login</button>
+  </form>
+  <div class="small text-muted mt-4">
+    Demo: admin@example.com / admin123,
+    staff@example.com / staff123,
+    user@example.com / user123
+  </div>
+  <p class="mt-3 mb-0">No account? <a href="{{ url_for('register') }}">Register here</a></p>
+</section>
+{% endblock %}
